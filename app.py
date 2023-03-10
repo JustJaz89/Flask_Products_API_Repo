@@ -43,7 +43,21 @@ jeans_schema = JeansSchema(many = True)
 
 
 # Resources
-
+class JeansListResource(Resource):
+    def get(self):
+        all_jeans = Jeans.query.all()
+        return jeans_schema.dump(all_jeans)
+    
+    def post(self):
+        print(request)
+        new_jean = Jeans(
+            name = request.json["name"],
+            description = request.json["description"],
+            price = request.json["price"],
+            inventory_quantity = request.json["inventory_quantity"]
+        )
+        pass
 
 
 # Routes
+api.add_resource(JeansListResource, "/api/jeans")
