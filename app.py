@@ -63,6 +63,13 @@ class JeanResource(Resource):
     def get(self, jean_id):
         jean_from_db = Jeans.query.get_or_404(jean_id)
         return jean_schema.dump(jean_from_db), 200
+    
+    def delete(self, jean_id):
+        jean_from_db = Jeans.query.get_or_404(jean_id)
+        db.session.delete(jean_from_db)
+        return "", 204
+    
+    
 
 
 # Routes
