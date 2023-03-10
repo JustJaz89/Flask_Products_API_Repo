@@ -56,7 +56,9 @@ class JeansListResource(Resource):
             price = request.json["price"],
             inventory_quantity = request.json["inventory_quantity"]
         )
-        pass
+        db.session.add(new_jean)
+        db.session.commit()
+        return jean_schema.dump(new_jean), 201
 
 
 # Routes
