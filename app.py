@@ -49,7 +49,6 @@ class JeansListResource(Resource):
         return jeans_schema.dump(all_jeans)
     
     def post(self):
-        print(request)
         new_jean = Jeans(
             name = request.json["name"],
             description = request.json["description"],
@@ -59,7 +58,13 @@ class JeansListResource(Resource):
         db.session.add(new_jean)
         db.session.commit()
         return jean_schema.dump(new_jean), 201
+    
+class JeanResource(Resource):
+    def get(self, jean_id):
+        jean_from_db = Jeans.query.get_or_404(jean_id)
+        return jean_schema.dump(jean_from_db), 200
 
 
 # Routes
 api.add_resource(JeansListResource, "/api/jeans")
+api.add_resource(JeanResource, "/api/jeans/<int:jean_id>")
