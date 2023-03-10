@@ -30,6 +30,8 @@ class Jeans(db.Model):
     price = db.Column(db.Integer)
     inventory_quantity = db.Column(db.Integer)
 
+    def __repr__(self):
+        return f"{self.name} {self.description} {self.price} {self.inventory_quantity}"
 
 # Schemas
 
