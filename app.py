@@ -69,7 +69,18 @@ class JeanResource(Resource):
         db.session.delete(jean_from_db)
         return "", 204
     
-    
+    def put(self, jean_id):
+        jean_from_db = Jeans.query.get_or_404(jean_id)
+        if "name" in request.json:
+            jean_from_db.name = request.json["name"]
+        if "description" in request.json:
+            jean_from_db.description = request.json["description"]
+        if "price" in request.json:
+            jean_from_db.price = request.json["price"]
+        if "inventory_quantity" in request.json:
+            jean_from_db.inventory_quantity = request.json["inventory_quantity"]
+        db.session.commit()
+        return jean_schema.dump(jean_from_db)
 
 
 # Routes
