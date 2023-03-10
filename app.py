@@ -60,15 +60,14 @@ class JeansListResource(Resource):
         return jeans_schema.dump(all_jeans)
     
     def post(self):
-        new_jean = Jeans(
-            name = request.json["name"],
-            description = request.json["description"],
-            price = request.json["price"],
-            inventory_quantity = request.json["inventory_quantity"]
-        )
-        db.session.add(new_jean)
-        db.session.commit()
-        return jean_schema.dump(new_jean), 201
+        form_data = request.get_json()
+        try:
+            new_jean = jean_schema.load(form_data)
+            db.session.add(new_jean)
+            db.session.commit()
+            return jean_schema.dump(new_jean), 201
+        except ValidationError as err:
+            return err.messages, 400
     
 class JeanResource(Resource):
     def get(self, jean_id):
