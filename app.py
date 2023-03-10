@@ -34,7 +34,12 @@ class Jeans(db.Model):
         return f"{self.name} {self.description} {self.price} {self.inventory_quantity}"
 
 # Schemas
+class JeansSchema(ma.Schema):
+    class Meta:
+        fields = ("id", "name", "description", "price", "inventory_quantity")
 
+jean_schema = JeansSchema()
+jeans_schema = JeansSchema(many = True)
 
 
 # Resources
