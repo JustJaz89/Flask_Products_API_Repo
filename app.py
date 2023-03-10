@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_migrate import Migrate
 from flask_restful import Api, Resource
+from marshmallow import post_load, fields, ValidationError
 from dotenv import load_dotenv
 from os import environ
 
@@ -35,8 +36,18 @@ class Jeans(db.Model):
 
 # Schemas
 class JeansSchema(ma.Schema):
+    id = fields.Integer(primary_key = True)
+    name = fields.String(required = True)
+    description = fields.String(required = True)
+    price = fields.Integer()
+    inventory_quantity = fields.Integer()
+
     class Meta:
         fields = ("id", "name", "description", "price", "inventory_quantity")
+
+    @post_load
+    def create_jean(self, data, **kwargs):
+        return Jeans(**data)
 
 jean_schema = JeansSchema()
 jeans_schema = JeansSchema(many = True)
@@ -80,7 +91,7 @@ class JeanResource(Resource):
         if "inventory_quantity" in request.json:
             jean_from_db.inventory_quantity = request.json["inventory_quantity"]
         db.session.commit()
-        return jean_schema.dump(jean_from_db)
+        return jean_schema.dump(jean_from_db), 200
 
 
 # Routes
