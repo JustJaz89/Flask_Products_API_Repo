@@ -28,7 +28,7 @@ class Jeans(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(255), nullable = False)
     description = db.Column(db.String(255), nullable = False)
-    price = db.Column(db.Integer)
+    price = db.Column(db.Float)
     inventory_quantity = db.Column(db.Integer)
 
     def __repr__(self):
@@ -39,7 +39,7 @@ class JeansSchema(ma.Schema):
     id = fields.Integer(primary_key = True)
     name = fields.String(required = True)
     description = fields.String(required = True)
-    price = fields.Integer()
+    price = fields.Float()
     inventory_quantity = fields.Integer()
 
     class Meta:
